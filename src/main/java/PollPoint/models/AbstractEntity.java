@@ -1,4 +1,4 @@
-package Poll.Lock.models;
+package PollPoint.models;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

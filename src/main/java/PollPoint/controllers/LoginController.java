@@ -1,9 +1,9 @@
-package Poll.Lock.controllers;
+package PollPoint.controllers;
 
-import Poll.Lock.data.UserRepository;
-import Poll.Lock.models.User;
-import Poll.Lock.models.dto.LoginFormDTO;
-import Poll.Lock.models.dto.RegisterFormDTO;
+import PollPoint.data.UserRepository;
+import PollPoint.models.User;
+import PollPoint.models.dto.LoginFormDTO;
+import PollPoint.models.dto.RegisterFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import static Poll.Lock.controllers.AuthenticationController.setUserInSession;
+import static PollPoint.controllers.AuthenticationController.setUserInSession;
 
 @Controller
 public class LoginController {

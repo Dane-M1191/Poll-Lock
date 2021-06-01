@@ -1,4 +1,4 @@
-package Poll.Lock.models.dto;
+package PollPoint.models.dto;
 
 public class RegisterFormDTO extends LoginFormDTO {
 

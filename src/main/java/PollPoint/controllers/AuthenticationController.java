@@ -1,7 +1,7 @@
-package Poll.Lock.controllers;
+package PollPoint.controllers;
 
-import Poll.Lock.data.UserRepository;
-import Poll.Lock.models.User;
+import PollPoint.data.UserRepository;
+import PollPoint.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

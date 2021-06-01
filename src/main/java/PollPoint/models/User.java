@@ -1,4 +1,4 @@
-package Poll.Lock.models;
+package PollPoint.models;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

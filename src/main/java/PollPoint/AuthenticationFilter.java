@@ -1,8 +1,8 @@
-package Poll.Lock;
+package PollPoint;
 
-import Poll.Lock.controllers.AuthenticationController;
-import Poll.Lock.data.UserRepository;
-import Poll.Lock.models.User;
+import PollPoint.controllers.AuthenticationController;
+import PollPoint.data.UserRepository;
+import PollPoint.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

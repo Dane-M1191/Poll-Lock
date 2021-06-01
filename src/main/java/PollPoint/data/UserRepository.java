@@ -1,6 +1,6 @@
-package Poll.Lock.data;
+package PollPoint.data;
 
-import Poll.Lock.models.User;
+import PollPoint.models.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
