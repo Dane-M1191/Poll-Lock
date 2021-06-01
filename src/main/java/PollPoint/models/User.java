@@ -3,8 +3,11 @@ package PollPoint.models;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +31,9 @@ public class User extends AbstractEntity {
 
     @NotNull
     private String lastName;
+
+    @OneToMany(mappedBy = "user")
+    private List<Poll> polls = new ArrayList<>();
 
     public User() { }
 
@@ -73,6 +79,9 @@ public class User extends AbstractEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public List<Poll> getPolls() {return polls;}
+    public void setPolls(List<Poll> polls) {this.polls = polls;}
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);

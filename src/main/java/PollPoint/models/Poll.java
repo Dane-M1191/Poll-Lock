@@ -1,6 +1,8 @@
 package PollPoint.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
@@ -11,14 +13,19 @@ public class Poll extends AbstractEntity {
     private String question;
     private String pollType;
     private String answers;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date endDate;
     private final int POINTS = 5;
     private boolean visibility;
 
-    public Poll() {
+    @ManyToOne
+    private User user;
 
-    }
+    public Poll() {}
 
     public Poll(String title, String category, String question, String pollType, String answers, Date startDate, Date endDate, boolean visibility) {
         super();
@@ -87,4 +94,7 @@ public class Poll extends AbstractEntity {
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
     }
+
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
 }
