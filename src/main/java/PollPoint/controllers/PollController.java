@@ -34,7 +34,7 @@ public class PollController {
         User userFromSession = authenticationController.getUserFromSession(session);
         model.addAttribute("user", userFromSession);
         model.addAttribute(new Poll());
-        return "create";
+        return "poll/create";
     }
 
     @PostMapping("create")
@@ -44,6 +44,6 @@ public class PollController {
         newPoll.setUser(userFromSession);
         pollRepository.save(newPoll);
         model.addAttribute("user", userFromSession);
-        return "index";
+        return "redirect:../";
     }
 }
