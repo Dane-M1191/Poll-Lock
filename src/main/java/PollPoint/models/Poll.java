@@ -3,7 +3,10 @@ package PollPoint.models;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Poll extends AbstractEntity {
@@ -12,7 +15,9 @@ public class Poll extends AbstractEntity {
     private String category;
     private String question;
     private String pollType;
-    private String answers;
+
+    @OneToMany(mappedBy = "poll")
+    private List<Answer> answers = new ArrayList<>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date startDate;
@@ -27,13 +32,12 @@ public class Poll extends AbstractEntity {
 
     public Poll() {}
 
-    public Poll(String title, String category, String question, String pollType, String answers, Date startDate, Date endDate, boolean visibility) {
+    public Poll(String title, String category, String question, String pollType, Date startDate, Date endDate, boolean visibility) {
         super();
         this.title = title;
         this.category = category;
         this.question = question;
         this.pollType = pollType;
-        this.answers = answers;
         this.startDate = startDate;
         this.endDate = endDate;
         this.visibility = visibility;
@@ -67,12 +71,10 @@ public class Poll extends AbstractEntity {
         this.pollType = pollType;
     }
 
-    public String getAnswers() {
+    public List<Answer> getAnswers() {
         return answers;
     }
-    public void setAnswers(String answers) {
-        this.answers = answers;
-    }
+    public void setAnswers(List<Answer> answers) { this.answers = answers; }
 
     public Date getStartDate() {
         return startDate;

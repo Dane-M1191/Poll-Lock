@@ -35,7 +35,7 @@
             <div>
                 Your most popular polls:
                 <ol>
-                    <li th:each="poll : ${polls}"><a th:href="@{#}" th:text="${poll.title}"></a></li>
+                    <li th:each="poll : ${polls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title}"></a></li>
                 </ol>
             </div>
         </div>

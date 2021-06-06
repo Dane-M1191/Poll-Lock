@@ -35,6 +35,9 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user")
     private List<Poll> polls = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers = new ArrayList<>();
+
     public User() { }
 
     public User(@NotNull String username, @NotNull String password, @NotNull String email, @NotNull String firstName, @NotNull String lastName) {
@@ -82,6 +85,11 @@ public class User extends AbstractEntity {
 
     public List<Poll> getPolls() {return polls;}
     public void setPolls(List<Poll> polls) {this.polls = polls;}
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+    public void setAnswers(List<Answer> answers) { this.answers = answers; }
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);
