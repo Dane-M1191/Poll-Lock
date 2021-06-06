@@ -1,5 +1,6 @@
 package PollPoint.controllers;
 
+import PollPoint.data.AnswerRepository;
 import PollPoint.data.PollRepository;
 import PollPoint.models.Answer;
 import PollPoint.models.Poll;
@@ -27,6 +28,9 @@ public class PollController {
     @Autowired
     private PollRepository pollRepository;
 
+    @Autowired
+    private AnswerRepository answerRepository;
+
     @GetMapping("create")
     public String displayCreatePollForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -42,6 +46,7 @@ public class PollController {
         User userFromSession = authenticationController.getUserFromSession(session);
         newPoll.setUser(userFromSession);
         pollRepository.save(newPoll);
+        userFromSession.getPolls().add(newPoll);
         model.addAttribute("user", userFromSession);
         return "redirect:../";
     }
@@ -54,5 +59,20 @@ public class PollController {
         model.addAttribute("poll", pollRepository.findById(pollId).get());
         model.addAttribute(new Answer());
         return "poll/answer";
+    }
+
+    @PostMapping("answer/{pollId}")
+    public String processPollAnswerForm(@PathVariable int pollId, @ModelAttribute @Valid Answer newAnswer, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User userFromSession = authenticationController.getUserFromSession(session);
+        model.addAttribute("user", userFromSession);
+        Poll poll = pollRepository.findById(pollId).get();
+        newAnswer.setUser(userFromSession);
+        newAnswer.setPoll(poll);
+        poll.getAnswers().add(newAnswer);
+        pollRepository.save(poll);
+        answerRepository.save(newAnswer);
+
+        return "redirect:../../";
     }
 }
