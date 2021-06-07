@@ -31,6 +31,8 @@ public class User extends AbstractEntity {
     @NotNull
     private String lastName;
 
+    private int points;
+
     @OneToMany(mappedBy = "user")
     private List<Poll> polls = new ArrayList<>();
 
@@ -89,6 +91,9 @@ public class User extends AbstractEntity {
         return answers;
     }
     public void setAnswers(List<Answer> answers) { this.answers = answers; }
+
+    public int getPoints() {return points;}
+    public void setPoints(int points) {this.points = points;}
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);

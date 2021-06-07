@@ -98,6 +98,8 @@ public class Poll extends AbstractEntity {
         this.visibility = visibility;
     }
 
+    public int getPOINTS() { return POINTS; }
+
     public int getAnswerCount() {return answerCount;}
     public void setAnswerCount(int answerCount) {this.answerCount = answerCount;}
 

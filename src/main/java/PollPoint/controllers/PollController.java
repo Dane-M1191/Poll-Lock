@@ -2,6 +2,7 @@ package PollPoint.controllers;
 
 import PollPoint.data.AnswerRepository;
 import PollPoint.data.PollRepository;
+import PollPoint.data.UserRepository;
 import PollPoint.models.Answer;
 import PollPoint.models.Poll;
 import PollPoint.models.User;
@@ -31,6 +32,9 @@ public class PollController {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("create")
     public String displayCreatePollForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -47,6 +51,9 @@ public class PollController {
         newPoll.setUser(userFromSession);
         pollRepository.save(newPoll);
         userFromSession.getPolls().add(newPoll);
+        int userPts = userFromSession.getPoints();
+        userFromSession.setPoints(userPts + newPoll.getPOINTS());
+        userRepository.save(userFromSession);
         model.addAttribute("user", userFromSession);
         return "redirect:../";
     }
@@ -66,6 +73,8 @@ public class PollController {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
         model.addAttribute("user", userFromSession);
+
+        //create answer
         Poll poll = pollRepository.findById(pollId).get();
         newAnswer.setUser(userFromSession);
         newAnswer.setPoll(poll);
@@ -74,6 +83,17 @@ public class PollController {
         poll.setAnswerCount(++answerCount);
         pollRepository.save(poll);
         answerRepository.save(newAnswer);
+
+        //assign points to user for answering
+        int userPts = userFromSession.getPoints();
+        userFromSession.setPoints(userPts + 3);
+        userRepository.save(userFromSession);
+
+        //assign points to poll owner
+        User pollOwner = userRepository.findById(poll.getUser().getId()).get();
+        int pollOwnerPts = pollOwner.getPoints();
+        pollOwner.setPoints(pollOwnerPts + 2);
+        userRepository.save(pollOwner);
 
         return "redirect:../../";
     }
