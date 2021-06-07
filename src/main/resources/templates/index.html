@@ -11,63 +11,65 @@
         <h5 th:text="'Welcome, '+ ${user.username} + '!'">Welcome!</h5>
     </div>
     <div class="row">
-        <div class="col-sm-4">
-            <form method="post">
-                <div class="form-group">
-                    <label>
-                        Your Polls:
-                        <select class="form-control" th:field="${user.polls}">
-                            <option th:each="poll : ${polls}"
-                                    th:value="${poll.id}"
-                                    th:text="${poll.title}">
-                            </option>
-                        </select>
+<!--        <div class="col-sm-4">-->
+<!--            <form method="post">-->
+<!--                <div class="form-group">-->
+<!--                    <label>-->
+<!--                        Your Polls:-->
+<!--                        <select class="form-control" th:field="${user.polls}">-->
+<!--                            <option th:each="poll : ${polls}"-->
+<!--                                    th:value="${poll.id}"-->
+<!--                                    th:text="${poll.title}">-->
+<!--                            </option>-->
+<!--                        </select>-->
 
-                    </label>
-                    <div class="form-group">
-                        <input class="btn btn-success" type="submit" value="Go!">
-                    </div>
-                </div>
-            </form>
-        </div>
+<!--                    </label>-->
+<!--                    <div class="form-group">-->
+<!--                        <input class="btn btn-success" type="submit" value="Go!">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
 
         <div class="col-sm-4">
             <div>
                 Your most popular polls:
-                <ol>
+                <ol class="mb-0">
                     <li th:each="poll : ${polls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title}"></a></li>
                 </ol>
+                <a th:href="@{/poll/list/{id}(id=${user.id})}" class="small">Browse Your Polls</a>
             </div>
         </div>
     </div>
 
-    <div class="row mt-5">
-        <div class="col-sm-4">
-            <form method="post">
-                <div class="form-group">
-                    <label>
-                        Browse all polls:
-                        <select class="form-control" th:field="${allPolls}">
-                            <option th:each="poll : ${allPolls}"
-                                    th:value="${poll.id}"
-                                    th:text="${poll.title}">
-                            </option>
-                        </select>
+    <div class="row mt-4">
+<!--        <div class="col-sm-4">-->
+<!--            <form method="post">-->
+<!--                <div class="form-group">-->
+<!--                    <label>-->
+<!--                        Browse all polls:-->
+<!--                        <select class="form-control" th:field="${allPolls}">-->
+<!--                            <option th:each="poll : ${allPolls}"-->
+<!--                                    th:value="${poll.id}"-->
+<!--                                    th:text="${poll.title}">-->
+<!--                            </option>-->
+<!--                        </select>-->
 
-                    </label>
-                    <div class="form-group">
-                        <input class="btn btn-success" type="submit" value="Go!">
-                    </div>
-                </div>
-            </form>
-        </div>
+<!--                    </label>-->
+<!--                    <div class="form-group">-->
+<!--                        <input class="btn btn-success" type="submit" value="Go!">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
 
         <div class="col-sm-4">
             <div>
                 Top 10 popular polls by: All Time
-                <ol>
-                    <li th:each="poll : ${allPolls}"><a th:href="@{#}" th:text="${poll.title}"></a></li>
+                <ol class="mb-0">
+                    <li th:each="poll : ${allPolls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title}"></a></li>
                 </ol>
+                <a th:href="@{/poll/list}" class="small">Browse All Polls</a>
             </div>
         </div>
     </div>

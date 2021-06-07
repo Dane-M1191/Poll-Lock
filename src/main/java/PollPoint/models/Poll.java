@@ -26,6 +26,7 @@ public class Poll extends AbstractEntity {
     private Date endDate;
     private final int POINTS = 5;
     private boolean visibility;
+    private int answerCount;
 
     @ManyToOne
     private User user;
@@ -96,6 +97,9 @@ public class Poll extends AbstractEntity {
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
     }
+
+    public int getAnswerCount() {return answerCount;}
+    public void setAnswerCount(int answerCount) {this.answerCount = answerCount;}
 
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;}

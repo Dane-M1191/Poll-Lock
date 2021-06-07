@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body>
+
+<div th:replace="fragments :: home-header-fragment"></div>
+
+<div class="container body-content mt-4">
+    <div class="row">
+        <div class="col-sm-4">
+            <div>
+                Browse All Polls:
+                <ol>
+                    <li th:each="poll : ${polls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title}"></a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

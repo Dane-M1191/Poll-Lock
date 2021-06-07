@@ -70,9 +70,29 @@ public class PollController {
         newAnswer.setUser(userFromSession);
         newAnswer.setPoll(poll);
         poll.getAnswers().add(newAnswer);
+         int answerCount = poll.getAnswerCount();
+        poll.setAnswerCount(++answerCount);
         pollRepository.save(poll);
         answerRepository.save(newAnswer);
 
         return "redirect:../../";
+    }
+
+    @GetMapping("list/{userId}")
+    public String displayUserPollList(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User userFromSession = authenticationController.getUserFromSession(session);
+        model.addAttribute("user", userFromSession);
+        model.addAttribute("polls", pollRepository.findAllByUserId(userFromSession.getId()));
+        return "poll/list";
+    }
+
+    @GetMapping("list")
+    public String displayAllPollList(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User userFromSession = authenticationController.getUserFromSession(session);
+        model.addAttribute("user", userFromSession);
+        model.addAttribute("polls", pollRepository.findAll());
+        return "poll/listall";
     }
 }

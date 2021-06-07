@@ -26,7 +26,8 @@ public class HomeController {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
         model.addAttribute("user", userFromSession);
-        model.addAttribute("polls", pollRepository.findAllByUserId(userFromSession.getId()));
+//        model.addAttribute("polls", pollRepository.findAllByUserId(userFromSession.getId()));
+        model.addAttribute("polls", userFromSession.findTop3(pollRepository.findAllByUserId(userFromSession.getId())));
         model.addAttribute("allPolls", pollRepository.findAll());
 
         return "index";
