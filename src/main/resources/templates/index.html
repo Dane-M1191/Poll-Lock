@@ -35,7 +35,7 @@
             <div>
                 Your most popular polls:
                 <ol class="mb-0">
-                    <li th:each="poll : ${polls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title}"></a></li>
+                    <li th:each="poll : ${polls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title} + ' with ' + ${poll.answerCount} + ' answers'"></a></li>
                 </ol>
                 <a th:href="@{/poll/list/{id}(id=${user.id})}" class="small">Browse Your Polls</a>
             </div>
@@ -67,7 +67,7 @@
             <div>
                 Top 10 popular polls by: All Time
                 <ol class="mb-0">
-                    <li th:each="poll : ${allPolls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title}"></a></li>
+                    <li th:each="poll : ${allPolls}"><a th:href="@{/poll/answer/{id}(id=${poll.id})}" th:text="${poll.title} + ' with ' + ${poll.answerCount} + ' answers'"></a></li>
                 </ol>
                 <a th:href="@{/poll/list}" class="small">Browse All Polls</a>
             </div>

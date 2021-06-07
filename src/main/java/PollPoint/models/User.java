@@ -14,7 +14,6 @@ import java.util.Objects;
 @Table(name = "users")
 public class User extends AbstractEntity {
 
-    // encryptor for passwords; we DO NOT want to store unencrypted passwords at all!
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @NotNull
@@ -110,45 +109,50 @@ public class User extends AbstractEntity {
 
     public List<Poll> findTop3(List<Poll> userPolls) {
         List<Poll> top3 = new ArrayList<>();
-        List<Poll> top3Unordered = new ArrayList<>();
 
         int answerCount = 0;
         int pollId1 = 0;
         int pollId2 = 0;
         int pollId3 = 0;
         for (Poll poll : userPolls) {
-            if (poll != null && poll.getAnswerCount() > answerCount){
-                if (pollId2 > 0) {
-                    pollId3 = pollId2;
-                }
-                if (pollId1 > 0) {
-                    pollId2 = pollId1;
-                }
+            if (poll != null && poll.getAnswerCount() >= answerCount){
                 answerCount = poll.getAnswerCount();
                 pollId1 = poll.getId();
             }
         }
 
+        answerCount = 0;
         for (Poll poll : userPolls) {
-            if (poll != null && (poll.getId() == pollId3 || poll.getId() == pollId2 || poll.getId() == pollId1)) {
-                top3Unordered.add(poll);
+            if (poll != null && poll.getAnswerCount() >= answerCount && poll.getId() != pollId1){
+                answerCount = poll.getAnswerCount();
+                pollId2 = poll.getId();
             }
         }
-        for (Poll poll : top3Unordered) {
+
+        answerCount = 0;
+        for (Poll poll : userPolls) {
+            if (poll != null && poll.getAnswerCount() >= answerCount && poll.getId() != pollId1 && poll.getId() != pollId2){
+                answerCount = poll.getAnswerCount();
+                pollId3 = poll.getId();
+            }
+        }
+
+        for (Poll poll : userPolls) {
             if (poll != null && poll.getId() == pollId1) {
                 top3.add(poll);
             }
         }
-        for (Poll poll : top3Unordered) {
+        for (Poll poll : userPolls) {
             if (poll != null && poll.getId() == pollId2) {
                 top3.add(poll);
             }
         }
-        for (Poll poll : top3Unordered) {
+        for (Poll poll : userPolls) {
             if (poll != null && poll.getId() == pollId3) {
                 top3.add(poll);
             }
         }
+
         return top3;
     }
 }
