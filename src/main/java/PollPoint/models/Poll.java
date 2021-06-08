@@ -1,6 +1,8 @@
 package PollPoint.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,7 +18,7 @@ public class Poll extends AbstractEntity {
     private String question;
     private String pollType;
 
-    @OneToMany(mappedBy = "poll")
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
