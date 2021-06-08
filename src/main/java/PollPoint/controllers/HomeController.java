@@ -31,7 +31,7 @@ public class HomeController {
         User userFromSession = authenticationController.getUserFromSession(session);
         model.addAttribute("user", userFromSession);
         model.addAttribute("polls", userFromSession.findTop3(pollRepository.findAllByUserId(userFromSession.getId())));
-        model.addAttribute("allPolls", pollRepository.findAll());
+        model.addAttribute("allPolls", userFromSession.findTop10(pollRepository.findAll()));
         return "index";
     }
 }

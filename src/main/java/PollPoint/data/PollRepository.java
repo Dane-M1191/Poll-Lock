@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PollRepository extends CrudRepository<Poll, Integer> {
     List<Poll> findAllByUserId(int UserId);
+    List<Poll> findAll();
 }

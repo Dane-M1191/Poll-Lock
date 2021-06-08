@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -116,49 +117,30 @@ public class User extends AbstractEntity {
     public List<Poll> findTop3(List<Poll> userPolls) {
         List<Poll> top3 = new ArrayList<>();
 
-        int answerCount = 0;
-        int pollId1 = 0;
-        int pollId2 = 0;
-        int pollId3 = 0;
+        userPolls.sort(Comparator.comparingInt(Poll::getAnswerCount).reversed());
+        int count = 0;
         for (Poll poll : userPolls) {
-            if (poll != null && poll.getAnswerCount() >= answerCount){
-                answerCount = poll.getAnswerCount();
-                pollId1 = poll.getId();
+            if (count == 3) {
+                break;
             }
+            top3.add(userPolls.get(count));
+            count++;
         }
-
-        answerCount = 0;
-        for (Poll poll : userPolls) {
-            if (poll != null && poll.getAnswerCount() >= answerCount && poll.getId() != pollId1){
-                answerCount = poll.getAnswerCount();
-                pollId2 = poll.getId();
-            }
-        }
-
-        answerCount = 0;
-        for (Poll poll : userPolls) {
-            if (poll != null && poll.getAnswerCount() >= answerCount && poll.getId() != pollId1 && poll.getId() != pollId2){
-                answerCount = poll.getAnswerCount();
-                pollId3 = poll.getId();
-            }
-        }
-
-        for (Poll poll : userPolls) {
-            if (poll != null && poll.getId() == pollId1) {
-                top3.add(poll);
-            }
-        }
-        for (Poll poll : userPolls) {
-            if (poll != null && poll.getId() == pollId2) {
-                top3.add(poll);
-            }
-        }
-        for (Poll poll : userPolls) {
-            if (poll != null && poll.getId() == pollId3) {
-                top3.add(poll);
-            }
-        }
-
         return top3;
+    }
+
+    public List<Poll> findTop10(List<Poll> userPolls) {
+        List<Poll> top10 = new ArrayList<>();
+
+        userPolls.sort(Comparator.comparingInt(Poll::getAnswerCount).reversed());
+        int count = 0;
+        for (Poll poll : userPolls) {
+            if (count == 10) {
+                break;
+            }
+            top10.add(userPolls.get(count));
+            count++;
+        }
+        return top10;
     }
 }
