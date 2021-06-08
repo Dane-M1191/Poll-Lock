@@ -6,8 +6,6 @@ import PollPoint.data.UserRepository;
 import PollPoint.models.Answer;
 import PollPoint.models.Poll;
 import PollPoint.models.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,13 +46,13 @@ public class PollController {
     public String processCreatePollForm(@ModelAttribute @Valid Poll newPoll, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
+        //create poll
         newPoll.setUser(userFromSession);
         pollRepository.save(newPoll);
-        userFromSession.getPolls().add(newPoll);
+        //assign points
         int userPts = userFromSession.getPoints();
         userFromSession.setPoints(userPts + newPoll.getPOINTS());
         userRepository.save(userFromSession);
-        model.addAttribute("user", userFromSession);
         return "redirect:../";
     }
 
@@ -62,23 +60,35 @@ public class PollController {
     public String displayPollAnswerForm(@PathVariable int pollId, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
+
+        Poll poll = pollRepository.findById(pollId).get();
+
+        //If user has already answered, edit answer
+        Answer userAnswer = null;
+        for (Answer answer : poll.getAnswers()) {
+            if (answer != null && answer.getUser().getId().equals(userFromSession.getId())) {
+                userAnswer = answer;
+            }
+        }
+        if (userAnswer != null) {
+            return "redirect:edit/" + poll.getId() + "/" + userAnswer.getId();
+        }
+        //------------------------------
         model.addAttribute("user", userFromSession);
-        model.addAttribute("poll", pollRepository.findById(pollId).get());
+        model.addAttribute("poll", poll);
         model.addAttribute(new Answer());
-        return "poll/answer";
+        return "poll/answer/answer";
     }
 
     @PostMapping("answer/{pollId}")
     public String processPollAnswerForm(@PathVariable int pollId, @ModelAttribute @Valid Answer newAnswer, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
-        model.addAttribute("user", userFromSession);
 
         //create answer
         Poll poll = pollRepository.findById(pollId).get();
         newAnswer.setUser(userFromSession);
         newAnswer.setPoll(poll);
-        poll.getAnswers().add(newAnswer);
          int answerCount = poll.getAnswerCount();
         poll.setAnswerCount(++answerCount);
         pollRepository.save(poll);
@@ -96,6 +106,28 @@ public class PollController {
         userRepository.save(pollOwner);
 
         return "redirect:../../";
+    }
+
+    @GetMapping("answer/edit/{pollId}/{answerId}")
+    public String displayEditAnswerForm(@PathVariable int pollId, @PathVariable int answerId, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User userFromSession = authenticationController.getUserFromSession(session);
+        model.addAttribute("user", userFromSession);
+        model.addAttribute("answer", answerRepository.findById(answerId));
+        model.addAttribute("poll", pollRepository.findById(pollId).get());
+        return "poll/answer/edit";
+    }
+
+    @PostMapping("answer/edit/{pollId}/{answerId}")
+    public String processEditAnswerForm(@ModelAttribute @Valid Answer answer, @PathVariable int pollId, @PathVariable int answerId, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User userFromSession = authenticationController.getUserFromSession(session);
+        //get answer
+        Answer userAnswer = answerRepository.findById(answerId).get();
+        //update users answer
+        userAnswer.setAnswerString(answer.getAnswerString());
+        answerRepository.save(userAnswer);
+        return "redirect:/";
     }
 
     @GetMapping("list/{userId}")
