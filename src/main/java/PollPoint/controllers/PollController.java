@@ -1,9 +1,11 @@
 package PollPoint.controllers;
 
 import PollPoint.data.AnswerRepository;
+import PollPoint.data.CategoryRepository;
 import PollPoint.data.PollRepository;
 import PollPoint.data.UserRepository;
 import PollPoint.models.Answer;
+import PollPoint.models.Category;
 import PollPoint.models.Poll;
 import PollPoint.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,23 @@ public class PollController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping("create")
     public String displayCreatePollForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
+
+        //create blank category
+        if (categoryRepository.findByCategoryString("") == null) {
+            Category blankCategory = new Category("");
+            categoryRepository.save(blankCategory);
+        }
+
+
         model.addAttribute("user", userFromSession);
+        model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute(new Poll());
         return "poll/create";
     }

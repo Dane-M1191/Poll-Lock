@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Category extends AbstractEntity{
 
-    @NotBlank(message = "Please enter a category name.")
+//    @NotBlank(message = "Please enter a category name.")
     private String categoryString;
 
     @ManyToMany(mappedBy = "categories")

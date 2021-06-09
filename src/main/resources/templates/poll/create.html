@@ -23,8 +23,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label>
-                                        Category:
-                                        <input class="form-control" th:field="${poll.category}"/>
+                                        Category(s):
+<!--                                        <input class="form-control" th:field="${poll.category}"/>-->
+                                        <select class="form-control" th:field="${categories}">
+                                            <option th:each="category : ${categories}"
+                                                    th:value="${category.id}"
+                                                    th:text="${category.categoryString}">
+                                            </option>
+                                        </select>
+                                        <small><a th:href="@{/category/create}">Create new category</a></small>
                                     </label>
                                 </div>
                                 <div class="form-group">
