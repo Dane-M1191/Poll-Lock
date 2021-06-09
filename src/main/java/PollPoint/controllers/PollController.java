@@ -43,27 +43,23 @@ public class PollController {
     public String displayCreatePollForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
-
-        //create blank category
-//        if (categoryRepository.findByCategoryString("") == null) {
-//            Category blankCategory = new Category("");
-//            categoryRepository.save(blankCategory);
-//        }
-
-
         model.addAttribute("user", userFromSession);
         Poll newPoll = new Poll();
         model.addAttribute(newPoll);
         model.addAttribute("categories", categoryRepository.findAll());
-//        model.addAttribute("categories", newPoll.getCategoryOptions());
-
         return "poll/create";
     }
 
     @PostMapping("create")
-    public String processCreatePollForm(@ModelAttribute @Valid Poll newPoll, Model model, HttpServletRequest request) {
+    public String processCreatePollForm(@ModelAttribute @Valid Poll newPoll, @RequestParam(required = false) int[] categoryIds, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User userFromSession = authenticationController.getUserFromSession(session);
+        //save category to poll
+        if (categoryIds != null) {
+            for (int id : categoryIds) {
+                newPoll.getCategories().add(categoryRepository.findById(id).get());
+            }
+        }
         //create poll
         newPoll.setUser(userFromSession);
         pollRepository.save(newPoll);
@@ -73,32 +69,6 @@ public class PollController {
         userRepository.save(userFromSession);
         return "redirect:../";
     }
-
-//    @GetMapping("category/create")
-//    public String displayCreateCategoryForm(Model model, HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        User userFromSession = authenticationController.getUserFromSession(session);
-//        model.addAttribute("user", userFromSession);
-//        model.addAttribute(new Category());
-//        return "poll/category/create";
-//    }
-//
-//    @PostMapping("category/create")
-//    public String processCreateCategoryForm(@ModelAttribute @Valid Category newCategory, Errors errors, Model model, HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        User userFromSession = authenticationController.getUserFromSession(session);
-//
-//        //check if category already exists
-//        if (categoryRepository.findByCategoryString(newCategory.getCategoryString()) != null) {
-//            errors.rejectValue("categoryString","categoryString.alreadyexists", "This category already exists.");
-//            model.addAttribute("user", userFromSession);
-//            return "poll/category/create";
-//        }
-//
-//        //create new category
-//        categoryRepository.save(newCategory);
-//        return "redirect:/poll/create";
-//    }
 
     @GetMapping("answer/{pollId}")
     public String displayPollAnswerForm(@PathVariable int pollId, Model model, HttpServletRequest request) {
