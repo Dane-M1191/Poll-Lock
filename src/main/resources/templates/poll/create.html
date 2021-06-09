@@ -63,10 +63,10 @@
                                     </div>
                                     <div class="form-control">
                                         <span class="mr-4" th:each="category : ${categories}">
-                                            <span>
+                                            <label>
                                                 <input type="checkbox" name="categoryIds" th:value="${category.id}">
-                                                <label th:text="${category.categoryString}"></label>
-                                            </span>
+                                                <span th:text="${category.categoryString}"></span>
+                                            </label>
                                         </span>
                                     </div>
                                 </div>
