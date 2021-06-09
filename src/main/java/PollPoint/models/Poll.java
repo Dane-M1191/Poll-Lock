@@ -2,10 +2,7 @@ package PollPoint.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,9 +11,11 @@ import java.util.List;
 public class Poll extends AbstractEntity {
 
     private String title;
-    private String category;
     private String question;
     private String pollType;
+
+    @ManyToMany
+    private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.REMOVE)
     private List<Answer> answers = new ArrayList<>();
@@ -35,10 +34,10 @@ public class Poll extends AbstractEntity {
 
     public Poll() {}
 
-    public Poll(String title, String category, String question, String pollType, Date startDate, Date endDate, boolean visibility) {
+    public Poll(String title, List<Category> categories, String question, String pollType, Date startDate, Date endDate, boolean visibility) {
         super();
         this.title = title;
-        this.category = category;
+        this.categories = categories;
         this.question = question;
         this.pollType = pollType;
         this.startDate = startDate;
@@ -51,13 +50,6 @@ public class Poll extends AbstractEntity {
     }
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getQuestion() {
@@ -73,6 +65,9 @@ public class Poll extends AbstractEntity {
     public void setPollType(String pollType) {
         this.pollType = pollType;
     }
+
+    public List<Category> getCategories() {return categories;}
+    public void setCategories(List<Category> categories) {this.categories = categories;}
 
     public List<Answer> getAnswers() {
         return answers;
