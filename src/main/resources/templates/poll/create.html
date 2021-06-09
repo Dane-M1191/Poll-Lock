@@ -23,19 +23,6 @@
                                 </div>
                                 <div class="form-group">
                                     <label>
-                                        Category(s):
-<!--                                        <input class="form-control" th:field="${poll.category}"/>-->
-                                        <select class="form-control" th:field="${categories}">
-                                            <option th:each="category : ${categories}"
-                                                    th:value="${category.id}"
-                                                    th:text="${category.categoryString}">
-                                            </option>
-                                        </select>
-                                        <small><a th:href="@{/category/create}">Create new category</a></small>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label>
                                         Start Date:
                                         <input class="form-control" th:field="${poll.startDate}" type="datetime-local"/>
                                     </label>
@@ -44,12 +31,6 @@
                                     <label>
                                         End Date:
                                         <input class="form-control" th:field="${poll.endDate}" type="datetime-local"/>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label>
-                                        Visibility
-                                        <input class="form-control" th:field="${poll.visibility}"/>
                                     </label>
                                 </div>
                             </div>
@@ -66,12 +47,29 @@
                                         <input class="form-control" th:field="${poll.pollType}"/>
                                     </label>
                                 </div>
-<!--                                <div class="form-group">-->
-<!--                                    <label>-->
-<!--                                        Answer(s):-->
-<!--                                        <input class="form-control" th:field="${poll.answers}"/>-->
-<!--                                    </label>-->
-<!--                                </div>-->
+                                <div class="form-group">
+                                    <label>
+                                        Visibility
+                                        <input class="form-control" th:field="${poll.visibility}"/>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div>
+                                        Category(s):
+                                    </div>
+                                    <div class="form-control">
+                                        <span class="mr-4" th:each="category : ${categories}">
+                                            <span>
+                                                <input type="checkbox" name="categoryId" th:value="${category.id}">
+                                                <label th:text="${category.categoryString}"></label>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

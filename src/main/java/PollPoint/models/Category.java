@@ -2,14 +2,12 @@ package PollPoint.models;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Category extends AbstractEntity{
 
-//    @NotBlank(message = "Please enter a category name.")
     private String categoryString;
 
     @ManyToMany(mappedBy = "categories")
